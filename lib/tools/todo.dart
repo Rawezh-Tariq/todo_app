@@ -1,13 +1,15 @@
-
 import 'dart:convert';
 
 class Todo {
-  final String? id;
+  final String id;
   final String title;
-  final String? body;
-  final bool isItChechked;
+  final String body;
+  final bool togglecheck;
   const Todo(
-      {this.body, required this.title, this.isItChechked = false, this.id});
+      {required this.body,
+      required this.title,
+      required this.togglecheck,
+      required this.id});
 
   @override
   bool operator ==(Object other) {
@@ -17,25 +19,25 @@ class Todo {
         other.id == id &&
         other.title == title &&
         other.body == body &&
-        other.isItChechked == isItChechked;
+        other.togglecheck == togglecheck;
   }
 
   @override
   int get hashCode {
-    return id.hashCode ^ title.hashCode ^ body.hashCode ^ isItChechked.hashCode;
+    return id.hashCode ^ title.hashCode ^ body.hashCode ^ togglecheck.hashCode;
   }
 
   Todo copyWith({
     String? id,
     String? title,
     String? body,
-    bool? isItChechked,
+    bool? togglecheck,
   }) {
     return Todo(
       id: id ?? this.id,
       title: title ?? this.title,
       body: body ?? this.body,
-      isItChechked: isItChechked ?? this.isItChechked,
+      togglecheck: togglecheck ?? this.togglecheck,
     );
   }
 
@@ -44,16 +46,16 @@ class Todo {
       'id': id,
       'title': title,
       'body': body,
-      'isItChechked': isItChechked,
+      'togglecheck': togglecheck,
     };
   }
 
   factory Todo.fromMap(Map<String, dynamic> map) {
     return Todo(
-      id: map['id'] != null ? map['id'] as String : null,
+      id: map['id'] as String,
       title: map['title'] as String,
-      body: map['body'] != null ? map['body'] as String : null,
-      isItChechked: map['isItChechked'] as bool,
+      body: map['body'] as String,
+      togglecheck: map['togglecheck'] as bool,
     );
   }
 

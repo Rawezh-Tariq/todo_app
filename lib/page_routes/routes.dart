@@ -1,5 +1,4 @@
 import 'package:go_router/go_router.dart';
-
 import 'package:todoapp/pages/addingtodo_page.dart';
 import 'package:todoapp/pages/editing_page.dart';
 import 'package:todoapp/pages/home_page.dart';
@@ -25,10 +24,11 @@ GoRouter router = GoRouter(
       ),
     ),
     GoRoute(
-      path: '/TodoPage/:id/:index',
+      path: '/TodoPage/:id/:index/:togglecheck',
       builder: (context, state) => TodoPage(
-        id: state.pathParameters['id']!,
+        togglecheck: bool.parse(state.pathParameters['togglecheck']!),
         index: int.parse(state.pathParameters['index']!),
+        id: state.pathParameters['id']!,
       ),
     ),
   ],

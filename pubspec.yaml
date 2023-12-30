@@ -17,6 +17,7 @@ dependencies:
   flutter_riverpod: ^2.4.8
   uuid: ^4.2.2
   shared_preferences: ^2.2.2
+  supabase_flutter: ^2.0.2
 
 dev_dependencies:
   flutter_test:
