@@ -8,14 +8,9 @@ class EditingPage extends ConsumerStatefulWidget {
   final String title;
   final String body;
   final String id;
-  final int index;
 
   const EditingPage(
-      {super.key,
-      required this.title,
-      required this.body,
-      required this.id,
-      required this.index});
+      {super.key, required this.title, required this.body, required this.id});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _EditingPageState();
@@ -40,7 +35,7 @@ class _EditingPageState extends ConsumerState<EditingPage> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            context.go('/TodoPage/${widget.id}/${widget.index}');
+            context.go('/TodoPage/${widget.id}');
           },
           icon: const Icon(Icons.arrow_back),
         ),
@@ -87,7 +82,7 @@ class _EditingPageState extends ConsumerState<EditingPage> {
                         titlecontroller.text,
                         todocontroller.text,
                       );
-                      context.go('/TodoPage/${widget.id}/${widget.index}');
+                      context.go('/TodoPage/${widget.id}');
                     }
                   : null,
               child: const Text('Submit'),

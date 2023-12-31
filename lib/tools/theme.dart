@@ -18,10 +18,12 @@ ThemeData myThime = ThemeData(
   listTileTheme: const ListTileThemeData(
     iconColor: Colors.black,
     titleTextStyle: TextStyle(
+      overflow: TextOverflow.ellipsis,
       color: Colors.black,
       fontSize: 24,
     ),
     subtitleTextStyle: TextStyle(
+      overflow: TextOverflow.ellipsis,
       color: Colors.grey,
       fontSize: 14,
     ),

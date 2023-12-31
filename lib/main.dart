@@ -1,9 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todoapp/page_routes/routes.dart';
+import 'package:todoapp/tools/riverpod_observer.dart';
 import 'package:todoapp/tools/theme.dart';
 
 void main() async {
@@ -18,28 +17,6 @@ void main() async {
     observers: [RiverpodObserver()],
     child: MyApp(),
   ));
-}
-
-class RiverpodObserver implements ProviderObserver {
-  const RiverpodObserver();
-  @override
-  void didAddProvider(ProviderBase<Object?> provider, Object? value,
-      ProviderContainer container) {}
-
-  @override
-  void didDisposeProvider(
-      ProviderBase<Object?> provider, ProviderContainer container) {}
-
-  @override
-  void didUpdateProvider(ProviderBase<Object?> provider, Object? previousValue,
-      Object? newValue, ProviderContainer container) {}
-
-  @override
-  void providerDidFail(ProviderBase<Object?> provider, Object error,
-      StackTrace stackTrace, ProviderContainer container) {
-    log('Provider $provider \nfailed: $error');
-    log(stackTrace.toString());
-  }
 }
 
 class MyApp extends StatelessWidget {

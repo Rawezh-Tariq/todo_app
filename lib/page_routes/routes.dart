@@ -15,19 +15,16 @@ GoRouter router = GoRouter(
       builder: (context, state) => const AddingTodo(),
     ),
     GoRoute(
-      path: '/EditTodo/:title/:body/:id/:index',
+      path: '/EditTodo/:title/:body/:id',
       builder: (context, state) => EditingPage(
         title: state.pathParameters['title']!,
         body: state.pathParameters['body']!,
         id: state.pathParameters['id']!,
-        index: int.parse(state.pathParameters['index']!),
       ),
     ),
     GoRoute(
-      path: '/TodoPage/:id/:index/:togglecheck',
+      path: '/TodoPage/:id',
       builder: (context, state) => TodoPage(
-        togglecheck: bool.parse(state.pathParameters['togglecheck']!),
-        index: int.parse(state.pathParameters['index']!),
         id: state.pathParameters['id']!,
       ),
     ),
