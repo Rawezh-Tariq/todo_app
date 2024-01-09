@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-ThemeData myThime = ThemeData(
+ThemeData myTheme = ThemeData(
   appBarTheme: const AppBarTheme(
     backgroundColor: Colors.amber,
     iconTheme: IconThemeData(color: Colors.black),
@@ -13,6 +13,8 @@ ThemeData myThime = ThemeData(
   ),
   scaffoldBackgroundColor: Colors.white,
   textTheme: const TextTheme(
+    titleLarge: TextStyle(
+        color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
     bodyLarge: TextStyle(color: Colors.black, fontSize: 18),
   ),
   listTileTheme: const ListTileThemeData(

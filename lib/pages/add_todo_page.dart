@@ -1,30 +1,24 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:todoapp/providerds/todosprovider.dart';
+import 'package:todoapp/providers/todos_provider.dart';
 
-class EditingPage extends ConsumerStatefulWidget {
-  final String title;
-  final String body;
-  final String id;
-
-  const EditingPage(
-      {super.key, required this.title, required this.body, required this.id});
+class AddingTodo extends ConsumerStatefulWidget {
+  const AddingTodo({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _EditingPageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _State();
 }
 
-class _EditingPageState extends ConsumerState<EditingPage> {
+class _State extends ConsumerState<AddingTodo> {
   final TextEditingController titlecontroller = TextEditingController();
   final TextEditingController todocontroller = TextEditingController();
 
   @override
-  void initState() {
-    titlecontroller.text = widget.title;
-    todocontroller.text = widget.body;
-    super.initState();
+  void dispose() {
+    todocontroller.dispose();
+    titlecontroller.dispose();
+    super.dispose();
   }
 
   @override
@@ -35,11 +29,11 @@ class _EditingPageState extends ConsumerState<EditingPage> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            context.go('/TodoPage/${widget.id}');
+            GoRouter.of(context).go('/');
           },
           icon: const Icon(Icons.arrow_back),
         ),
-        title: const Text('edit Your Todo'),
+        title: const Text('Add Your Todo'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -77,12 +71,12 @@ class _EditingPageState extends ConsumerState<EditingPage> {
               onPressed: titlecontroller.text.isNotEmpty &&
                       todocontroller.text.isNotEmpty
                   ? () {
-                      todos.updateTodo(
-                        widget.id,
+                      todos.addTodo(
                         titlecontroller.text,
                         todocontroller.text,
                       );
-                      context.go('/TodoPage/${widget.id}');
+
+                      context.go('/');
                     }
                   : null,
               child: const Text('Submit'),

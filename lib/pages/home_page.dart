@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:todoapp/providerds/todosprovider.dart';
+import 'package:todoapp/providers/todos_provider.dart';
 import 'package:todoapp/widgets/todo_list_widget.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -52,7 +52,7 @@ class _State extends ConsumerState<HomePage> {
       },
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          GoRouter.of(context).go('/AddTodo');
+          context.go('/addTodo');
         },
         child: const Icon(Icons.add),
       ),

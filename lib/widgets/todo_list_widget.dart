@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:todoapp/providerds/todosprovider.dart';
+import 'package:todoapp/providers/todos_provider.dart';
 import 'package:todoapp/tools/theme.dart';
 
 class TodosList extends ConsumerWidget {
@@ -22,7 +22,7 @@ class TodosList extends ConsumerWidget {
           child: todos.isEmpty
               ? Center(
                   child: Text('No Todo in the list',
-                      style: myThime.textTheme.bodyLarge),
+                      style: myTheme.textTheme.bodyLarge),
                 )
               : ListView.separated(
                   itemCount: todos.length,
@@ -41,7 +41,7 @@ class TodosList extends ConsumerWidget {
                           },
                           child: GestureDetector(
                             onTap: () {
-                              GoRouter.of(context).go('/TodoPage/${todo.id}');
+                              GoRouter.of(context).go('/todo/${todo.id}');
                             },
                             child: ListTile(
                               title: Text(todo.title),

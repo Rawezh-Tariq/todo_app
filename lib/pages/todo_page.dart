@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:todoapp/providerds/todosprovider.dart';
+import 'package:todoapp/providers/todos_provider.dart';
 import 'package:todoapp/tools/theme.dart';
 
 class TodoPage extends ConsumerStatefulWidget {
@@ -28,7 +28,7 @@ class _State extends ConsumerState<TodoPage> {
         ),
         actions: [
           Checkbox(
-            side: myThime.checkboxTheme.side!.copyWith(color: Colors.black),
+            side: myTheme.checkboxTheme.side!.copyWith(color: Colors.black),
             value: todo.togglecheck,
             onChanged: (_) {
               todoProvider.togglecheck(todo.id);
@@ -41,7 +41,7 @@ class _State extends ConsumerState<TodoPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(todo.body, style: myThime.textTheme.bodySmall),
+            Text(todo.body, style: myTheme.textTheme.bodySmall),
             Expanded(
               child: Align(
                 alignment: Alignment.bottomCenter,
@@ -51,7 +51,7 @@ class _State extends ConsumerState<TodoPage> {
                     ElevatedButton(
                       onPressed: () {
                         GoRouter.of(context).go(
-                            '/EditTodo/${todo.title}/${todo.body}/${todo.id}');
+                            '/editTodo/${todo.title}/${todo.body}/${todo.id}');
                       },
                       child: const Text('edit'),
                     ),
