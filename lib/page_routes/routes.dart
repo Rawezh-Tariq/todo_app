@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -7,44 +6,34 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todoapp/pages/add_todo_page.dart';
 import 'package:todoapp/pages/edit_page.dart';
 import 'package:todoapp/pages/home_page.dart';
-import 'package:todoapp/pages/sign_up_page.dart';
+import 'package:todoapp/pages/auth_page.dart';
 import 'package:todoapp/pages/todo_page.dart';
-import 'package:todoapp/providers/auth_provider.dart';
 
-class GoRouterRefreshStream extends ChangeNotifier {
-  GoRouterRefreshStream(Stream<dynamic> stream) {
-    notifyListeners();
-    _subscription = stream.asBroadcastStream().listen(
-          (dynamic _) => notifyListeners(),
-        );
+class StreamListenable extends ChangeNotifier {
+  StreamListenable(Stream stream) {
+    subscription = stream.listen((_) => notifyListeners());
   }
-
-  late final StreamSubscription<dynamic> _subscription;
+  late final StreamSubscription subscription;
 
   @override
   void dispose() {
-    _subscription.cancel();
+    subscription.cancel();
     super.dispose();
   }
 }
 
 final goRouterProvider = Provider(
   (ref) => GoRouter(
-    refreshListenable: GoRouterRefreshStream(
-      Supabase.instance.client.auth.onAuthStateChange,
-    ),
+    refreshListenable:
+        StreamListenable(Supabase.instance.client.auth.onAuthStateChange),
     redirect: (context, state) {
-      final path = state.fullPath;
-      final isLoggedIn = ref.read(userProvider) != null;
+      final user = Supabase.instance.client.auth.currentUser;
+      if (state.matchedLocation == '/auth' && user != null) {
+        return '/';
+      }
 
-      if (isLoggedIn) {
-        if (path == '/signUp') {
-          return '/';
-        }
-      } else {
-        if (path != '/signUp') {
-          return '/';
-        }
+      if (state.matchedLocation != '/auth' && user == null) {
+        return '/auth';
       }
       return null;
     },
@@ -54,7 +43,7 @@ final goRouterProvider = Provider(
         builder: (context, state) => const HomePage(),
       ),
       GoRoute(
-        path: '/signUp',
+        path: '/auth',
         builder: (context, state) => const SignUp(),
       ),
       GoRoute(
@@ -62,17 +51,17 @@ final goRouterProvider = Provider(
         builder: (context, state) => const AddingTodo(),
       ),
       GoRoute(
-        path: '/editTodo/:title/:body/:id',
+        path: '/editTodo/:title/:body/:todo_id',
         builder: (context, state) => EditingPage(
           title: state.pathParameters['title']!,
           body: state.pathParameters['body']!,
-          id: state.pathParameters['id']!,
+          todoId: state.pathParameters['todo_id']!,
         ),
       ),
       GoRoute(
-        path: '/todo/:id',
+        path: '/todo/:todo_id',
         builder: (context, state) => TodoPage(
-          id: state.pathParameters['id']!,
+          todoId: state.pathParameters['todo_id']!,
         ),
       ),
     ],

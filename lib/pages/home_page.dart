@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:todoapp/providers/auth_provider.dart';
 import 'package:todoapp/providers/todos_provider.dart';
 import 'package:todoapp/widgets/todo_list_widget.dart';
 
@@ -16,22 +17,21 @@ class HomePage extends ConsumerStatefulWidget {
 class _State extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
+    final authProviderr = ref.watch(authProvider.notifier);
     final todosState = ref.watch(todosProvider);
     final todosNotifier = ref.watch(todosProvider.notifier);
     final todos = ref.watch(todosProvider).value ?? [];
-    // ref.listen(todosProvider, (previous, next) {
-    //   if (previous?.error != next.error) {
-    //     ScaffoldMessenger.of(context).showSnackBar(
-    //       SnackBar(
-    //         content: Text(next.error.toString()),
-    //       ),
-    //     );
-    //   }
-    // });
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("My Todo's"),
+        leading: IconButton(
+          onPressed: () {
+            authProviderr.signOut();
+            context.go('/auth');
+          },
+          icon: const Icon(Icons.output_rounded),
+        ),
         actions: [
           IconButton(
               onPressed: todos.isEmpty ||

@@ -5,8 +5,8 @@ import 'package:todoapp/providers/todos_provider.dart';
 import 'package:todoapp/tools/theme.dart';
 
 class TodoPage extends ConsumerStatefulWidget {
-  final String id;
-  const TodoPage({super.key, required this.id});
+  final String todoId;
+  const TodoPage({super.key, required this.todoId});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _State();
@@ -15,7 +15,7 @@ class TodoPage extends ConsumerStatefulWidget {
 class _State extends ConsumerState<TodoPage> {
   @override
   Widget build(BuildContext context) {
-    final todo = ref.watch(todoProviderFamily(widget.id));
+    final todo = ref.watch(todoProviderFamily(widget.todoId));
     final todoProvider = ref.watch(todosProvider.notifier);
     return Scaffold(
       appBar: AppBar(
@@ -31,7 +31,7 @@ class _State extends ConsumerState<TodoPage> {
             side: myTheme.checkboxTheme.side!.copyWith(color: Colors.black),
             value: todo.togglecheck,
             onChanged: (_) {
-              todoProvider.togglecheck(todo.id);
+              todoProvider.togglecheck(todo.todoId);
             },
           ),
         ],
@@ -51,13 +51,13 @@ class _State extends ConsumerState<TodoPage> {
                     ElevatedButton(
                       onPressed: () {
                         GoRouter.of(context).go(
-                            '/editTodo/${todo.title}/${todo.body}/${todo.id}');
+                            '/editTodo/${todo.title}/${todo.body}/${todo.todoId}');
                       },
                       child: const Text('edit'),
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        todoProvider.deleteTodo(todo.id);
+                        todoProvider.deleteTodo(todo.todoId);
                         GoRouter.of(context).go('/');
                       },
                       child: const Text('delet'),

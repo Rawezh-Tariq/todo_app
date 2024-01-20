@@ -7,10 +7,13 @@ import 'package:todoapp/providers/todos_provider.dart';
 class EditingPage extends ConsumerStatefulWidget {
   final String title;
   final String body;
-  final String id;
+  final String todoId;
 
   const EditingPage(
-      {super.key, required this.title, required this.body, required this.id});
+      {super.key,
+      required this.title,
+      required this.body,
+      required this.todoId});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _EditingPageState();
@@ -35,7 +38,7 @@ class _EditingPageState extends ConsumerState<EditingPage> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            context.go('/todo/${widget.id}');
+            context.go('/todo/${widget.todoId}');
           },
           icon: const Icon(Icons.arrow_back),
         ),
@@ -78,11 +81,11 @@ class _EditingPageState extends ConsumerState<EditingPage> {
                       todocontroller.text.isNotEmpty
                   ? () {
                       todos.updateTodo(
-                        widget.id,
+                        widget.todoId,
                         titlecontroller.text,
                         todocontroller.text,
                       );
-                      context.go('/todo/${widget.id}');
+                      context.go('/todo/${widget.todoId}');
                     }
                   : null,
               child: const Text('Submit'),

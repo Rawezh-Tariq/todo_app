@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:todoapp/providers/auth_provider.dart';
 import 'package:todoapp/providers/todos_provider.dart';
 
 class AddingTodo extends ConsumerStatefulWidget {
@@ -24,6 +25,7 @@ class _State extends ConsumerState<AddingTodo> {
   @override
   Widget build(BuildContext context) {
     final todos = ref.watch(todosProvider.notifier);
+    final auth = ref.watch(authProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -74,6 +76,7 @@ class _State extends ConsumerState<AddingTodo> {
                       todos.addTodo(
                         titlecontroller.text,
                         todocontroller.text,
+                        auth.userId,
                       );
 
                       context.go('/');

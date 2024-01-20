@@ -3,21 +3,11 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 final auth = Supabase.instance.client.auth;
 
-final userProvider = Provider<User?>((ref) {
-  final subscription = auth.onAuthStateChange.listen((event) {
-    if (ref.state != event.session?.user) {
-      ref.invalidateSelf();
-    }
-  });
+final isInorUp = StateProvider((ref) => true);
 
-  ref.onDispose(() => subscription.cancel());
-
-  return auth.currentUser;
-});
-
-final authProvider = AsyncNotifierProvider<AuthProvider, void>(() {
-  return AuthProvider();
-});
+final authProvider = AsyncNotifierProvider<AuthProvider, void>(
+  AuthProvider.new,
+);
 
 class AuthProvider extends AsyncNotifier<void> {
   @override
@@ -25,12 +15,17 @@ class AuthProvider extends AsyncNotifier<void> {
 
   Future<void> signUp(String email, String password) async {
     state = const AsyncValue.loading();
+
     state = await AsyncValue.guard(() async {
-      await auth.signUp(
-        email: email,
-        password: password,
-      );
-      return;
+      await auth
+          .signUp(
+            email: email,
+            password: password,
+          )
+          .whenComplete(() async => await auth.signInWithPassword(
+                email: email,
+                password: password,
+              ));
     });
   }
 
@@ -43,4 +38,10 @@ class AuthProvider extends AsyncNotifier<void> {
       );
     });
   }
+
+  Future<void> signOut() async {
+    await auth.signOut();
+  }
+
+  get userId => auth.currentUser?.id;
 }

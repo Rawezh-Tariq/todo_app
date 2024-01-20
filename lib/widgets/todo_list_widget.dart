@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todoapp/providers/todos_provider.dart';
 import 'package:todoapp/tools/theme.dart';
 
@@ -14,6 +15,9 @@ class TodosList extends ConsumerWidget {
     final todosState = ref.watch(todosProvider);
     final todosNotifier = ref.watch(todosProvider.notifier);
     final todos = todosState.value!;
+    final isIt = todos.any((element) =>
+        element.userId != Supabase.instance.client.auth.currentUser?.id);
+    isIt ? ref.invalidate(todosProvider) : null;
 
     return Column(
       children: [
@@ -37,11 +41,11 @@ class TodosList extends ConsumerWidget {
                               color: Colors.red,
                               child: const Icon(Icons.delete)),
                           onDismissed: (_) {
-                            todosNotifier.deleteTodo(todo.id);
+                            todosNotifier.deleteTodo(todo.todoId);
                           },
                           child: GestureDetector(
                             onTap: () {
-                              GoRouter.of(context).go('/todo/${todo.id}');
+                              GoRouter.of(context).go('/todo/${todo.todoId}');
                             },
                             child: ListTile(
                               title: Text(todo.title),
@@ -49,8 +53,16 @@ class TodosList extends ConsumerWidget {
                               leading: Checkbox(
                                 value: todo.togglecheck,
                                 onChanged: (_) {
-                                  todosNotifier.togglecheck(todo.id);
+                                  todosNotifier.togglecheck(todo.todoId);
                                 },
+                              ),
+                              trailing: IconButton(
+                                onPressed: () {
+                                  final user =
+                                      Supabase.instance.client.auth.currentUser;
+                                  print(user?.email);
+                                },
+                                icon: const Icon(Icons.access_alarms),
                               ),
                             ),
                           ),

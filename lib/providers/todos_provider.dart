@@ -1,16 +1,17 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:todoapp/providers/auth_provider.dart';
 import 'package:todoapp/tools/todo.dart';
 import 'package:uuid/uuid.dart';
 
 final todosProvider = AsyncNotifierProvider<MyTodos, List<Todo>>(MyTodos.new);
 
 final todoProviderFamily = StateProviderFamily(
-  (ref, String id) {
+  (ref, String todoId) {
     final todo = ref
         .watch(todosProvider)
         .value!
-        .firstWhere((element) => element.id == id);
+        .firstWhere((element) => element.todoId == todoId);
     return todo;
   },
 );
@@ -18,21 +19,29 @@ final todoProviderFamily = StateProviderFamily(
 class MyTodos extends AsyncNotifier<List<Todo>> {
   @override
   Future<List<Todo>> build() async {
-    final supabaseTodos =
-        await Supabase.instance.client.from('todo_table').select();
-    final todos = supabaseTodos.map((e) => Todo.fromMap(e)).toList();
+    final auth = ref.watch(authProvider.notifier);
+
+    final supabaseTodos = await Supabase.instance.client.from('todos').select();
+    final todos = supabaseTodos
+        .map((e) => Todo.fromMap(e))
+        .where((element) => element.userId == auth.userId)
+        .toList();
 
     return todos;
   }
 
-  Future<void> addTodo(String title, String body) async {
+  Future<void> addTodo(String title, String body, String userId) async {
     state = const AsyncLoading();
 
     state = await AsyncValue.guard(() async {
       final newTodo = Todo(
-          title: title, body: body, id: const Uuid().v4(), togglecheck: false);
+          title: title,
+          body: body,
+          todoId: const Uuid().v4(),
+          userId: userId,
+          togglecheck: false);
 
-      await Supabase.instance.client.from('todo_table').insert(newTodo.toMap());
+      await Supabase.instance.client.from('todos').insert(newTodo.toMap());
 
       final value = [...?state.value, newTodo];
 
@@ -40,24 +49,27 @@ class MyTodos extends AsyncNotifier<List<Todo>> {
     });
   }
 
-  Future<void> deleteTodo(String id) async {
+  Future<void> deleteTodo(String todoId) async {
     //state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
-      await Supabase.instance.client.from('todo_table').delete().eq('id', id);
+      await Supabase.instance.client
+          .from('todos')
+          .delete()
+          .eq('todo_id', todoId);
       final value = [...?state.value];
-      value.removeWhere((element) => element.id == id);
+      value.removeWhere((element) => element.todoId == todoId);
 
       return value;
     });
   }
 
-  Future<void> updateTodo(String id, String title, String body) async {
+  Future<void> updateTodo(String todoId, String title, String body) async {
     state = await AsyncValue.guard(() async {
       await Supabase.instance.client
-          .from('todo_table')
-          .update({'title': title, 'body': body}).match({'id': id});
+          .from('todos')
+          .update({'title': title, 'body': body}).match({'todo_id': todoId});
       final value = [...?state.value];
-      final oldTodo = value.firstWhere((element) => element.id == id);
+      final oldTodo = value.firstWhere((element) => element.todoId == todoId);
       final index = value.indexOf(oldTodo);
       value[index] = oldTodo.copyWith(
         title: title,
@@ -68,16 +80,16 @@ class MyTodos extends AsyncNotifier<List<Todo>> {
     });
   }
 
-  Future<void> togglecheck(String id) async {
-    final todo = state.value?.firstWhere((element) => element.id == id);
+  Future<void> togglecheck(String todoId) async {
+    final todo = state.value?.firstWhere((element) => element.todoId == todoId);
     final togglecheck = !(todo?.togglecheck ?? false);
     state = await AsyncValue.guard(() async {
       await Supabase.instance.client
-          .from('todo_table')
-          .update({'togglecheck': togglecheck}).eq('id', id);
+          .from('todos')
+          .update({'togglecheck': togglecheck}).eq('todo_id', todoId);
 
       final value = [...?state.value];
-      final oldTodo = value.firstWhere((element) => element.id == id);
+      final oldTodo = value.firstWhere((element) => element.todoId == todoId);
       final index = value.indexOf(oldTodo);
       value[index] = oldTodo.copyWith(
         togglecheck: !oldTodo.togglecheck,
@@ -90,7 +102,7 @@ class MyTodos extends AsyncNotifier<List<Todo>> {
   Future<void> deleteAllChechedTodos() async {
     state = await AsyncValue.guard(() async {
       await Supabase.instance.client
-          .from('todo_table')
+          .from('todos')
           .delete()
           .eq('togglecheck', true);
       final value = [...?state.value];
