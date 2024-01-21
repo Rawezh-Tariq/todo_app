@@ -24,14 +24,14 @@ class _State extends ConsumerState<AddingTodo> {
 
   @override
   Widget build(BuildContext context) {
-    final todos = ref.watch(todosProvider.notifier);
+    final todoProvider = ref.watch(todosProvider.notifier);
     final auth = ref.watch(authProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            GoRouter.of(context).go('/');
+            context.go('/');
           },
           icon: const Icon(Icons.arrow_back),
         ),
@@ -73,7 +73,7 @@ class _State extends ConsumerState<AddingTodo> {
               onPressed: titlecontroller.text.isNotEmpty &&
                       todocontroller.text.isNotEmpty
                   ? () {
-                      todos.addTodo(
+                      todoProvider.addTodo(
                         titlecontroller.text,
                         todocontroller.text,
                         auth.userId,

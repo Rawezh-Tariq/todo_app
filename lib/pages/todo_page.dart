@@ -22,7 +22,7 @@ class _State extends ConsumerState<TodoPage> {
         title: Text(todo.title),
         leading: IconButton(
           onPressed: () {
-            GoRouter.of(context).go('/');
+            context.go('/');
           },
           icon: const Icon(Icons.arrow_back),
         ),
@@ -50,7 +50,7 @@ class _State extends ConsumerState<TodoPage> {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        GoRouter.of(context).go(
+                        context.go(
                             '/editTodo/${todo.title}/${todo.body}/${todo.todoId}');
                       },
                       child: const Text('edit'),
@@ -58,7 +58,7 @@ class _State extends ConsumerState<TodoPage> {
                     ElevatedButton(
                       onPressed: () {
                         todoProvider.deleteTodo(todo.todoId);
-                        GoRouter.of(context).go('/');
+                        context.go('/');
                       },
                       child: const Text('delet'),
                     ),

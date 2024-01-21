@@ -3,11 +3,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 final auth = Supabase.instance.client.auth;
 
-final isInorUp = StateProvider((ref) => true);
+final isSignUp = StateProvider((ref) => true);
 
-final authProvider = AsyncNotifierProvider<AuthProvider, void>(
-  AuthProvider.new,
-);
+final authProvider =
+    AsyncNotifierProvider<AuthProvider, void>(AuthProvider.new);
 
 class AuthProvider extends AsyncNotifier<void> {
   @override

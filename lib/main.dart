@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todoapp/tools/riverpod_observer.dart';
-
 import 'app.dart';
 
 void main() async {

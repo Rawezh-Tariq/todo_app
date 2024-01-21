@@ -32,7 +32,7 @@ class _EditingPageState extends ConsumerState<EditingPage> {
 
   @override
   Widget build(BuildContext context) {
-    final todos = ref.watch(todosProvider.notifier);
+    final todoProvider = ref.watch(todosProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -80,7 +80,7 @@ class _EditingPageState extends ConsumerState<EditingPage> {
               onPressed: titlecontroller.text.isNotEmpty &&
                       todocontroller.text.isNotEmpty
                   ? () {
-                      todos.updateTodo(
+                      todoProvider.updateTodo(
                         widget.todoId,
                         titlecontroller.text,
                         todocontroller.text,

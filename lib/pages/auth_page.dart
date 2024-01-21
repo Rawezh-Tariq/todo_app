@@ -23,8 +23,8 @@ class _SignUpState extends ConsumerState<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    final authProviderr = ref.watch(authProvider.notifier);
-    final isSignUpProvider = ref.watch(isInorUp);
+    final auth = ref.watch(authProvider.notifier);
+    final isItSignUp = ref.watch(isSignUp);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Welcome"),
@@ -35,7 +35,7 @@ class _SignUpState extends ConsumerState<SignUp> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              isSignUpProvider ? 'Sign Up' : 'Sign In',
+              isItSignUp ? 'Sign Up' : 'Sign In',
               style: myTheme.textTheme.titleLarge,
             ),
             const SizedBox(height: 10),
@@ -72,19 +72,19 @@ class _SignUpState extends ConsumerState<SignUp> {
                   onPressed: _emailController.text.isNotEmpty &&
                           _passwordController.text.isNotEmpty
                       ? () {
-                          isSignUpProvider
-                              ? authProviderr.signUp(_emailController.text,
+                          isItSignUp
+                              ? auth.signUp(_emailController.text,
                                   _passwordController.text)
-                              : authProviderr.signIn(_emailController.text,
+                              : auth.signIn(_emailController.text,
                                   _passwordController.text);
                         }
                       : null,
-                  child: Text(isSignUpProvider ? 'Sign Up' : 'Sign In'),
+                  child: Text(isItSignUp ? 'Sign Up' : 'Sign In'),
                 ),
                 TextButton(
-                  child: Text(isSignUpProvider ? 'Sign In' : 'Sign Up'),
+                  child: Text(isItSignUp ? 'Sign In' : 'Sign Up'),
                   onPressed: () {
-                    ref.read(isInorUp.notifier).state = !isSignUpProvider;
+                    ref.read(isSignUp.notifier).state = !isItSignUp;
                     _emailController.clear();
                     _passwordController.clear();
                   },

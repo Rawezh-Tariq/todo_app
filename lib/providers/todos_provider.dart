@@ -110,4 +110,6 @@ class MyTodos extends AsyncNotifier<List<Todo>> {
       return value;
     });
   }
+
+  List<Todo> get todos => state.value ?? [];
 }
