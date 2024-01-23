@@ -53,14 +53,14 @@ class _State extends ConsumerState<TodoPage> {
                         context.go(
                             '/editTodo/${todo.title}/${todo.body}/${todo.todoId}');
                       },
-                      child: const Text('edit'),
+                      child: Text('edit', style: myTheme.textTheme.bodySmall),
                     ),
                     ElevatedButton(
                       onPressed: () {
                         todoProvider.deleteTodo(todo.todoId);
                         context.go('/');
                       },
-                      child: const Text('delet'),
+                      child: Text('delet', style: myTheme.textTheme.bodySmall),
                     ),
                   ],
                 ),

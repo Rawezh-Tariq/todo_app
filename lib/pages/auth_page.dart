@@ -79,10 +79,12 @@ class _SignUpState extends ConsumerState<SignUp> {
                                   _passwordController.text);
                         }
                       : null,
-                  child: Text(isItSignUp ? 'Sign Up' : 'Sign In'),
+                  child: Text(isItSignUp ? 'Sign Up' : 'Sign In',
+                      style: myTheme.textTheme.bodySmall),
                 ),
                 TextButton(
-                  child: Text(isItSignUp ? 'Sign In' : 'Sign Up'),
+                  child: Text(isItSignUp ? 'Sign In' : 'Sign Up',
+                      style: myTheme.textTheme.bodySmall),
                   onPressed: () {
                     ref.read(isSignUp.notifier).state = !isItSignUp;
                     _emailController.clear();
