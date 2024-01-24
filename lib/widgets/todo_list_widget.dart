@@ -41,7 +41,7 @@ class TodosList extends ConsumerWidget {
                           },
                           child: GestureDetector(
                             onTap: () {
-                              context.go('/todo/${todo.todoId}', extra: 'kk');
+                              context.go('/todo/${todo.todoId}');
                             },
                             child: ListTile(
                               title: Text(todo.title),

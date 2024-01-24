@@ -28,7 +28,7 @@ class _State extends ConsumerState<TodoPage> {
         ),
         actions: [
           Checkbox(
-            side: myTheme.checkboxTheme.side!.copyWith(color: Colors.black),
+            side: myTheme.checkboxTheme.side,
             value: todo.togglecheck,
             onChanged: (_) {
               todoProvider.togglecheck(todo.todoId);
@@ -53,14 +53,18 @@ class _State extends ConsumerState<TodoPage> {
                         context.go(
                             '/editTodo/${todo.title}/${todo.body}/${todo.todoId}');
                       },
-                      child: Text('edit', style: myTheme.textTheme.bodySmall),
+                      child: Text('edit',
+                          style: myTheme.textTheme.bodySmall!
+                              .copyWith(color: Colors.white)),
                     ),
                     ElevatedButton(
                       onPressed: () {
                         todoProvider.deleteTodo(todo.todoId);
                         context.go('/');
                       },
-                      child: Text('delet', style: myTheme.textTheme.bodySmall),
+                      child: Text('delet',
+                          style: myTheme.textTheme.bodySmall!
+                              .copyWith(color: Colors.white)),
                     ),
                   ],
                 ),

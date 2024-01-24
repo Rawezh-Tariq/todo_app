@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:todoapp/providers/auth_provider.dart';
 import 'package:todoapp/tools/todo.dart';
 import 'package:uuid/uuid.dart';
 
@@ -19,20 +18,18 @@ final todoProviderFamily = StateProviderFamily(
 class MyTodos extends AsyncNotifier<List<Todo>> {
   @override
   Future<List<Todo>> build() async {
-    final auth = ref.watch(authProvider.notifier);
-
-    final supabaseTodos = await Supabase.instance.client.from('todos').select();
-    final todos = supabaseTodos
-        .map((e) => Todo.fromMap(e))
-        .where((element) => element.userId == auth.userId)
-        .toList();
+    final userId = Supabase.instance.client.auth.currentUser?.id;
+    final supabaseTodos = await Supabase.instance.client
+        .from('todos')
+        .select()
+        .eq('user_id ', '$userId');
+    final todos = supabaseTodos.map((e) => Todo.fromMap(e)).toList();
 
     return todos;
   }
 
   Future<void> addTodo(String title, String body, String userId) async {
     state = const AsyncLoading();
-
     state = await AsyncValue.guard(() async {
       final newTodo = Todo(
           title: title,
@@ -50,7 +47,7 @@ class MyTodos extends AsyncNotifier<List<Todo>> {
   }
 
   Future<void> deleteTodo(String todoId) async {
-    //state = const AsyncLoading();
+    state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       await Supabase.instance.client
           .from('todos')

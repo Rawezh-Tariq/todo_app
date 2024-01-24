@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todoapp/providers/auth_provider.dart';
+import 'package:todoapp/providers/todos_provider.dart';
 import 'package:todoapp/tools/theme.dart';
 
 class SignUp extends ConsumerStatefulWidget {
@@ -77,10 +78,12 @@ class _SignUpState extends ConsumerState<SignUp> {
                                   _passwordController.text)
                               : auth.signIn(_emailController.text,
                                   _passwordController.text);
+                          ref.invalidate(todosProvider);
                         }
                       : null,
                   child: Text(isItSignUp ? 'Sign Up' : 'Sign In',
-                      style: myTheme.textTheme.bodySmall),
+                      style: myTheme.textTheme.bodySmall!
+                          .copyWith(color: Colors.white)),
                 ),
                 TextButton(
                   child: Text(isItSignUp ? 'Sign In' : 'Sign Up',

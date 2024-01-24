@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 ThemeData myTheme = ThemeData(
   appBarTheme: const AppBarTheme(
     backgroundColor: Colors.black,
-    iconTheme: IconThemeData(color: Colors.grey),
+    iconTheme: IconThemeData(color: Colors.white),
     titleTextStyle: TextStyle(
-      color: Colors.grey,
+      color: Colors.white,
       fontSize: 24,
       fontWeight: FontWeight.bold,
     ),
@@ -14,39 +14,40 @@ ThemeData myTheme = ThemeData(
   scaffoldBackgroundColor: Colors.white,
   textTheme: const TextTheme(
     titleLarge: TextStyle(
-        color: Colors.grey, fontSize: 24, fontWeight: FontWeight.bold),
-    bodyLarge: TextStyle(color: Colors.grey, fontSize: 18),
+        color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
+    bodyLarge: TextStyle(color: Colors.black, fontSize: 18),
   ),
   listTileTheme: const ListTileThemeData(
-    iconColor: Colors.grey,
+    iconColor: Colors.black,
     titleTextStyle: TextStyle(
       overflow: TextOverflow.ellipsis,
-      color: Colors.grey,
+      color: Colors.black,
       fontSize: 24,
     ),
     subtitleTextStyle: TextStyle(
       overflow: TextOverflow.ellipsis,
-      color: Colors.grey,
+      color: Colors.black,
       fontSize: 14,
     ),
   ),
   checkboxTheme: const CheckboxThemeData(
-    checkColor: MaterialStatePropertyAll(Colors.black),
-    fillColor: MaterialStatePropertyAll(Colors.grey),
-    side: BorderSide(color: Colors.grey),
+    checkColor: MaterialStatePropertyAll(Colors.white),
+    fillColor: MaterialStatePropertyAll(Colors.black),
+    side: BorderSide(color: Colors.white),
   ),
-  dividerTheme: const DividerThemeData(color: Colors.grey, thickness: 1),
+  dividerTheme: const DividerThemeData(color: Colors.black, thickness: 1),
   elevatedButtonTheme: const ElevatedButtonThemeData(
     style: ButtonStyle(
-      backgroundColor: MaterialStatePropertyAll(Colors.grey),
-      foregroundColor: MaterialStatePropertyAll(Colors.grey),
+      backgroundColor: MaterialStatePropertyAll(Colors.black),
+      foregroundColor: MaterialStatePropertyAll(Colors.white),
       side: MaterialStatePropertyAll(
         BorderSide(color: Colors.black, width: 1),
       ),
     ),
   ),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
-    backgroundColor: Colors.grey,
+    backgroundColor: Colors.black,
+    foregroundColor: Colors.white,
     iconSize: 24,
   ),
 );
