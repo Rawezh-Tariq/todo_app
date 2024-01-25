@@ -23,16 +23,26 @@ class _State extends ConsumerState<HomePage> {
     final todos = todoProvider.todos;
 
     return Scaffold(
+      drawer: Drawer(
+        backgroundColor: Colors.white,
+        child: Column(
+          children: [
+            const DrawerHeader(
+              child: Text("Settings"),
+            ),
+            ListTile(
+              trailing: const Icon(Icons.output),
+              title: const Text("Logout"),
+              onTap: () => auth.signOut(),
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
         title: const Text("My Todo's"),
-        leading: IconButton(
-          onPressed: () {
-            auth.signOut();
-          },
-          icon: const Icon(Icons.output_rounded),
-        ),
         actions: [
           IconButton(
+              disabledColor: Colors.grey,
               onPressed: todos.isEmpty ||
                       todos.every((element) => element.togglecheck == false)
                   ? null

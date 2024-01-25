@@ -34,7 +34,7 @@ class TodosList extends ConsumerWidget {
                               Dismissible(
                                 key: UniqueKey(),
                                 background: Container(
-                                    color: Colors.red,
+                                    color: Colors.grey,
                                     child: const Icon(Icons.delete)),
                                 onDismissed: (_) {
                                   todoProvider.deleteTodo(todo.todoId);

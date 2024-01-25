@@ -15,7 +15,7 @@ class TodoPage extends ConsumerStatefulWidget {
 class _State extends ConsumerState<TodoPage> {
   @override
   Widget build(BuildContext context) {
-    final todo = ref.watch(todoProviderFamily(widget.todoId));
+    final todo = ref.read(todoProviderFamily(widget.todoId));
     final todoProvider = ref.watch(todosProvider.notifier);
     return Scaffold(
       appBar: AppBar(
