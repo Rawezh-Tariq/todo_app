@@ -17,49 +17,55 @@ class TodosList extends ConsumerWidget {
 
     return Column(
       children: [
-        if (todosState.isLoading) const LinearProgressIndicator(),
-        Expanded(
-          child: todos.isEmpty
-              ? Center(
-                  child: Text('No Todo in the list',
-                      style: myTheme.textTheme.bodyLarge),
-                )
-              : ListView.separated(
-                  itemCount: todos.length,
-                  separatorBuilder: (context, index) => const Divider(),
-                  itemBuilder: (context, index) {
-                    final todo = todos[index];
-                    return Column(
-                      children: [
-                        Dismissible(
-                          key: UniqueKey(),
-                          background: Container(
-                              color: Colors.red,
-                              child: const Icon(Icons.delete)),
-                          onDismissed: (_) {
-                            todoProvider.deleteTodo(todo.todoId);
-                          },
-                          child: GestureDetector(
-                            onTap: () {
-                              context.go('/todo/${todo.todoId}');
-                            },
-                            child: ListTile(
-                              title: Text(todo.title),
-                              subtitle: Text(todo.body, maxLines: 1),
-                              leading: Checkbox(
-                                value: todo.togglecheck,
-                                onChanged: (_) {
-                                  todoProvider.togglecheck(todo.todoId);
+        todosState.hasValue
+            ? Expanded(
+                child: todos.isEmpty
+                    ? Center(
+                        child: Text('No Todo in the list',
+                            style: myTheme.textTheme.bodyLarge),
+                      )
+                    : ListView.separated(
+                        itemCount: todos.length,
+                        separatorBuilder: (context, index) => const Divider(),
+                        itemBuilder: (context, index) {
+                          final todo = todos[index];
+                          return Column(
+                            children: [
+                              Dismissible(
+                                key: UniqueKey(),
+                                background: Container(
+                                    color: Colors.red,
+                                    child: const Icon(Icons.delete)),
+                                onDismissed: (_) {
+                                  todoProvider.deleteTodo(todo.todoId);
                                 },
+                                child: GestureDetector(
+                                  onTap: () {
+                                    context.go('/todo/${todo.todoId}');
+                                  },
+                                  child: ListTile(
+                                    title: Text(todo.title),
+                                    subtitle: Text(todo.body, maxLines: 1),
+                                    leading: Checkbox(
+                                      value: todo.togglecheck,
+                                      onChanged: (_) {
+                                        todoProvider.togglecheck(todo.todoId);
+                                      },
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-        ),
+                            ],
+                          );
+                        },
+                      ),
+              )
+            : const Center(),
+        todosState.isLoading
+            ? const LinearProgressIndicator(
+                color: Colors.black,
+              )
+            : const Center(),
       ],
     );
   }

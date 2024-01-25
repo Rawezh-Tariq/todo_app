@@ -28,7 +28,6 @@ class _State extends ConsumerState<HomePage> {
         leading: IconButton(
           onPressed: () {
             auth.signOut();
-            context.go('/auth');
           },
           icon: const Icon(Icons.output_rounded),
         ),
@@ -45,10 +44,12 @@ class _State extends ConsumerState<HomePage> {
       ),
       body: switch (todosState) {
         AsyncValue(hasValue: true) => const TodosList(),
-        AsyncError(:final error) => Center(
+        AsyncError(error: final error) => Center(
             child: Text('Error $error'),
           ),
-        _ => const Center(child: CircularProgressIndicator()),
+        _ => const Center(
+            child: CircularProgressIndicator(color: Colors.black),
+          ),
       },
       floatingActionButton: FloatingActionButton(
         onPressed: () {
