@@ -60,6 +60,7 @@ class MyTodos extends AsyncNotifier<List<Todo>> {
   }
 
   Future<void> updateTodo(String todoId, String title, String body) async {
+    state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       await Supabase.instance.client
           .from('todos')
@@ -76,6 +77,7 @@ class MyTodos extends AsyncNotifier<List<Todo>> {
   }
 
   Future<void> togglecheck(String todoId) async {
+    state = const AsyncLoading();
     final todo = state.value?.firstWhere((element) => element.todoId == todoId);
     final togglecheck = !(todo?.togglecheck ?? false);
     state = await AsyncValue.guard(() async {
@@ -95,6 +97,7 @@ class MyTodos extends AsyncNotifier<List<Todo>> {
   }
 
   Future<void> deleteAllChechedTodos() async {
+    state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       await Supabase.instance.client
           .from('todos')

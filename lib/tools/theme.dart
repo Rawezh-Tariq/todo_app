@@ -23,7 +23,7 @@ ThemeData myTheme = ThemeData(
     titleTextStyle: TextStyle(
       overflow: TextOverflow.ellipsis,
       color: Colors.black,
-      fontSize: 24,
+      fontSize: 18,
     ),
     subtitleTextStyle: TextStyle(
       overflow: TextOverflow.ellipsis,
@@ -52,6 +52,10 @@ ThemeData myTheme = ThemeData(
       borderRadius: BorderRadius.circular(50),
     ),
     surfaceTintColor: Colors.white,
+  ),
+  drawerTheme: const DrawerThemeData(
+    surfaceTintColor: Color.fromARGB(255, 250, 250, 250),
+    backgroundColor: Color.fromARGB(255, 250, 250, 250),
   ),
   floatingActionButtonTheme: FloatingActionButtonThemeData(
     backgroundColor: Colors.black,

@@ -76,9 +76,10 @@ class _SignUpState extends ConsumerState<SignUp> {
                           isItSignUp
                               ? auth.signUp(_emailController.text,
                                   _passwordController.text)
-                              : auth.signIn(_emailController.text,
-                                  _passwordController.text);
-                          ref.invalidate(todosProvider);
+                              : auth
+                                  .signIn(_emailController.text,
+                                      _passwordController.text)
+                                  .then((_) => ref.invalidate(todosProvider));
                         }
                       : null,
                   child: Text(isItSignUp ? 'Sign Up' : 'Sign In',

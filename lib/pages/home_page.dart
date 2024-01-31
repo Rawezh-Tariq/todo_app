@@ -24,11 +24,15 @@ class _State extends ConsumerState<HomePage> {
 
     return Scaffold(
       drawer: Drawer(
-        backgroundColor: Colors.white,
         child: Column(
           children: [
             const DrawerHeader(
               child: Text("Settings"),
+            ),
+            ListTile(
+              trailing: const Icon(Icons.add),
+              title: const Text("Add Todo"),
+              onTap: () => context.go('/addTodo'),
             ),
             ListTile(
               trailing: const Icon(Icons.output),

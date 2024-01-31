@@ -55,27 +55,23 @@ class _EditingPageState extends ConsumerState<EditingPage> {
                 FocusScope.of(context).unfocus();
               },
               controller: titlecontroller,
-              maxLength: 30,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Write your title here',
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
               ),
             ),
+            const SizedBox(height: 100),
             TextField(
               onTapOutside: (_) {
                 FocusScope.of(context).unfocus();
               },
               controller: todocontroller,
-              maxLength: 3000,
-              minLines: 5,
+              minLines: 1,
               maxLines: 10,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Write your todos here',
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
               ),
             ),
+            const SizedBox(height: 100),
             TextButton(
               onPressed: titlecontroller.text.isNotEmpty &&
                       todocontroller.text.isNotEmpty

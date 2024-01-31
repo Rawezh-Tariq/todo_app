@@ -12,6 +12,7 @@ class TodoPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final todo = ref.watch(todoProviderFamily(todoId));
     final todoProvider = ref.watch(todosProvider.notifier);
+    final todosState = ref.watch(todosProvider);
     if (todo == null) {
       return Scaffold(
           body: Center(
@@ -72,6 +73,11 @@ class TodoPage extends ConsumerWidget {
                 ),
               ),
             ),
+            todosState.isLoading
+                ? const LinearProgressIndicator(
+                    color: Colors.black,
+                  )
+                : Container(),
           ],
         ),
       ),
