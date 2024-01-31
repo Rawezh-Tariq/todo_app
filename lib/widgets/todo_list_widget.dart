@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:todoapp/providers/todos_provider.dart';
 import 'package:todoapp/tools/theme.dart';
+import 'package:todoapp/widgets/my_card.dart';
 
 class TodosList extends ConsumerWidget {
   const TodosList({
@@ -26,36 +26,14 @@ class TodosList extends ConsumerWidget {
                       )
                     : ListView.separated(
                         itemCount: todos.length,
-                        separatorBuilder: (context, index) => const Divider(),
+                        separatorBuilder: (context, index) => const SizedBox(
+                          height: 10,
+                        ),
                         itemBuilder: (context, index) {
                           final todo = todos[index];
-                          return Column(
-                            children: [
-                              Dismissible(
-                                key: UniqueKey(),
-                                background: Container(
-                                    color: Colors.grey,
-                                    child: const Icon(Icons.delete)),
-                                onDismissed: (_) {
-                                  todoProvider.deleteTodo(todo.todoId);
-                                },
-                                child: GestureDetector(
-                                  onTap: () {
-                                    context.go('/todo/${todo.todoId}');
-                                  },
-                                  child: ListTile(
-                                    title: Text(todo.title),
-                                    subtitle: Text(todo.body, maxLines: 1),
-                                    leading: Checkbox(
-                                      value: todo.togglecheck,
-                                      onChanged: (_) {
-                                        todoProvider.togglecheck(todo.todoId);
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                          return Opacity(
+                            opacity: todo.togglecheck ? 0.5 : 1,
+                            child: MyCard(todoId: todo.todoId),
                           );
                         },
                       ),

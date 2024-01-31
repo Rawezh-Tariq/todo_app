@@ -44,6 +44,7 @@ class _State extends ConsumerState<AddingTodo> {
           children: [
             const Padding(padding: EdgeInsets.all(16)),
             TextField(
+              autofocus: true,
               onTapOutside: (_) {
                 FocusScope.of(context).unfocus();
               },

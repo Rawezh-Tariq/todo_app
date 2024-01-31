@@ -4,19 +4,24 @@ import 'package:go_router/go_router.dart';
 import 'package:todoapp/providers/todos_provider.dart';
 import 'package:todoapp/tools/theme.dart';
 
-class TodoPage extends ConsumerStatefulWidget {
+class TodoPage extends ConsumerWidget {
   final String todoId;
   const TodoPage({super.key, required this.todoId});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _State();
-}
-
-class _State extends ConsumerState<TodoPage> {
-  @override
-  Widget build(BuildContext context) {
-    final todo = ref.read(todoProviderFamily(widget.todoId));
+  Widget build(BuildContext context, WidgetRef ref) {
+    final todo = ref.watch(todoProviderFamily(todoId));
     final todoProvider = ref.watch(todosProvider.notifier);
+    if (todo == null) {
+      return Scaffold(
+          body: Center(
+        child: ElevatedButton(
+            onPressed: () {
+              context.go('/');
+            },
+            child: const Text('go_Home')),
+      ));
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text(todo.title),
@@ -28,7 +33,8 @@ class _State extends ConsumerState<TodoPage> {
         ),
         actions: [
           Checkbox(
-            side: myTheme.checkboxTheme.side,
+            checkColor: Colors.white,
+            fillColor: const MaterialStatePropertyAll(Colors.black),
             value: todo.togglecheck,
             onChanged: (_) {
               todoProvider.togglecheck(todo.todoId);
@@ -48,23 +54,19 @@ class _State extends ConsumerState<TodoPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    ElevatedButton(
+                    IconButton(
+                      icon: const Icon(Icons.edit, color: Colors.black),
                       onPressed: () {
                         context.go(
                             '/editTodo/${todo.title}/${todo.body}/${todo.todoId}');
                       },
-                      child: Text('edit',
-                          style: myTheme.textTheme.bodySmall!
-                              .copyWith(color: Colors.white)),
                     ),
-                    ElevatedButton(
+                    IconButton(
+                      icon: const Icon(Icons.delete, color: Colors.black),
                       onPressed: () {
                         todoProvider.deleteTodo(todo.todoId);
                         context.go('/');
                       },
-                      child: Text('delet',
-                          style: myTheme.textTheme.bodySmall!
-                              .copyWith(color: Colors.white)),
                     ),
                   ],
                 ),

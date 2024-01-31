@@ -2,20 +2,21 @@ import 'package:flutter/material.dart';
 
 ThemeData myTheme = ThemeData(
   appBarTheme: const AppBarTheme(
-    backgroundColor: Colors.black,
-    iconTheme: IconThemeData(color: Colors.white),
+    backgroundColor: Color.fromARGB(255, 250, 250, 250),
+    surfaceTintColor: Color.fromARGB(255, 250, 250, 250),
+    iconTheme: IconThemeData(color: Colors.black),
     titleTextStyle: TextStyle(
-      color: Colors.white,
+      color: Colors.black,
       fontSize: 24,
-      fontWeight: FontWeight.bold,
     ),
     centerTitle: true,
   ),
-  scaffoldBackgroundColor: Colors.white,
+  scaffoldBackgroundColor: const Color.fromARGB(255, 250, 250, 250),
   textTheme: const TextTheme(
     titleLarge: TextStyle(
         color: Colors.black, fontSize: 24, fontWeight: FontWeight.bold),
-    bodyLarge: TextStyle(color: Colors.black, fontSize: 18),
+    bodyLarge: TextStyle(color: Colors.black, fontSize: 24),
+    bodySmall: TextStyle(color: Colors.black, fontSize: 18),
   ),
   listTileTheme: const ListTileThemeData(
     iconColor: Colors.black,
@@ -32,10 +33,10 @@ ThemeData myTheme = ThemeData(
   ),
   checkboxTheme: const CheckboxThemeData(
     checkColor: MaterialStatePropertyAll(Colors.white),
-    fillColor: MaterialStatePropertyAll(Colors.black),
+    fillColor: MaterialStatePropertyAll(Color.fromARGB(255, 245, 243, 243)),
     side: BorderSide(color: Colors.white),
+    shape: CircleBorder(),
   ),
-  dividerTheme: const DividerThemeData(color: Colors.black, thickness: 1),
   elevatedButtonTheme: const ElevatedButtonThemeData(
     style: ButtonStyle(
       backgroundColor: MaterialStatePropertyAll(Colors.black),
@@ -45,9 +46,20 @@ ThemeData myTheme = ThemeData(
       ),
     ),
   ),
-  floatingActionButtonTheme: const FloatingActionButtonThemeData(
+  cardTheme: CardTheme(
+    color: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(50),
+    ),
+    surfaceTintColor: Colors.white,
+  ),
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
     backgroundColor: Colors.black,
     foregroundColor: Colors.white,
-    iconSize: 24,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(40),
+    ),
+    sizeConstraints: const BoxConstraints.expand(width: 70, height: 70),
+    iconSize: 34,
   ),
 );

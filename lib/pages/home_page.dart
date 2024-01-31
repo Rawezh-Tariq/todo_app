@@ -61,6 +61,7 @@ class _State extends ConsumerState<HomePage> {
             child: CircularProgressIndicator(color: Colors.black),
           ),
       },
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context.go('/addTodo');

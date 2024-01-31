@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todoapp/tools/todo.dart';
 import 'package:uuid/uuid.dart';
+import 'package:collection/collection.dart';
 
 final todosProvider = AsyncNotifierProvider<MyTodos, List<Todo>>(MyTodos.new);
 
@@ -10,7 +11,7 @@ final todoProviderFamily = StateProviderFamily(
     final todo = ref
         .watch(todosProvider)
         .value!
-        .firstWhere((element) => element.todoId == todoId);
+        .firstWhereOrNull((element) => element.todoId == todoId);
     return todo;
   },
 );
@@ -22,9 +23,8 @@ class MyTodos extends AsyncNotifier<List<Todo>> {
     final supabaseTodos = await Supabase.instance.client
         .from('todos')
         .select()
-        .eq('user_id ', '$userId');
+        .eq('user_id ', userId!);
     final todos = supabaseTodos.map((e) => Todo.fromMap(e)).toList();
-
     return todos;
   }
 
@@ -55,7 +55,6 @@ class MyTodos extends AsyncNotifier<List<Todo>> {
           .eq('todo_id', todoId);
       final value = [...?state.value];
       value.removeWhere((element) => element.todoId == todoId);
-
       return value;
     });
   }
@@ -72,7 +71,6 @@ class MyTodos extends AsyncNotifier<List<Todo>> {
         title: title,
         body: body,
       );
-
       return value;
     });
   }
