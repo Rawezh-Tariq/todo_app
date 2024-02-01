@@ -36,6 +36,7 @@ class TodoPage extends ConsumerWidget {
           Checkbox(
             checkColor: Colors.white,
             fillColor: const MaterialStatePropertyAll(Colors.black),
+            shape: const RoundedRectangleBorder(),
             value: todo.togglecheck,
             onChanged: (_) {
               todoProvider.togglecheck(todo.todoId);

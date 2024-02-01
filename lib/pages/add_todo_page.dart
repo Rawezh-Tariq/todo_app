@@ -12,13 +12,28 @@ class AddingTodo extends ConsumerStatefulWidget {
 }
 
 class _State extends ConsumerState<AddingTodo> {
-  final TextEditingController titlecontroller = TextEditingController();
-  final TextEditingController todocontroller = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+  final TextEditingController _titlecontroller = TextEditingController();
+  final TextEditingController _todocontroller = TextEditingController();
+
+  String? titleValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'enter a title';
+    }
+    return null;
+  }
+
+  String? bodyValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'enter a body';
+    }
+    return null;
+  }
 
   @override
   void dispose() {
-    todocontroller.dispose();
-    titlecontroller.dispose();
+    _todocontroller.dispose();
+    _titlecontroller.dispose();
     super.dispose();
   }
 
@@ -40,48 +55,52 @@ class _State extends ConsumerState<AddingTodo> {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: Column(
-          children: [
-            const Padding(padding: EdgeInsets.all(16)),
-            TextField(
-              autofocus: true,
-              onTapOutside: (_) {
-                FocusScope.of(context).unfocus();
-              },
-              controller: titlecontroller,
-              decoration: const InputDecoration(
-                hintText: 'Write your title here',
+        child: Form(
+          key: formKey,
+          child: Column(
+            children: [
+              const Padding(padding: EdgeInsets.all(16)),
+              TextFormField(
+                validator: titleValidator,
+                autofocus: true,
+                onTapOutside: (_) {
+                  FocusScope.of(context).unfocus();
+                },
+                controller: _titlecontroller,
+                decoration: const InputDecoration(
+                  hintText: 'Write your title here',
+                ),
               ),
-            ),
-            const SizedBox(height: 100),
-            TextField(
-              onTapOutside: (_) {
-                FocusScope.of(context).unfocus();
-              },
-              controller: todocontroller,
-              minLines: 1,
-              maxLines: 10,
-              decoration: const InputDecoration(
-                hintText: 'Write your todos here',
+              const SizedBox(height: 100),
+              TextFormField(
+                validator: bodyValidator,
+                onTapOutside: (_) {
+                  FocusScope.of(context).unfocus();
+                },
+                controller: _todocontroller,
+                minLines: 1,
+                maxLines: 10,
+                decoration: const InputDecoration(
+                  hintText: 'Write your todos here',
+                ),
               ),
-            ),
-            const SizedBox(height: 100),
-            TextButton(
-              onPressed: titlecontroller.text.isNotEmpty &&
-                      todocontroller.text.isNotEmpty
-                  ? () {
-                      todoProvider.addTodo(
-                        titlecontroller.text,
-                        todocontroller.text,
-                        auth.userId,
-                      );
+              const SizedBox(height: 100),
+              TextButton(
+                onPressed: () {
+                  if (formKey.currentState?.validate() ?? false) {
+                    todoProvider.addTodo(
+                      _titlecontroller.text,
+                      _todocontroller.text,
+                      auth.userId,
+                    );
 
-                      context.go('/');
-                    }
-                  : null,
-              child: const Text('Submit'),
-            ),
-          ],
+                    context.go('/');
+                  }
+                },
+                child: const Text('Submit'),
+              ),
+            ],
+          ),
         ),
       ),
     );
