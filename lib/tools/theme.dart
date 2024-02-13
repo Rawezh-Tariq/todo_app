@@ -49,7 +49,7 @@ ThemeData myTheme = ThemeData(
   cardTheme: CardTheme(
     color: Colors.white,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(50),
+      borderRadius: BorderRadius.circular(25),
     ),
     surfaceTintColor: Colors.white,
   ),

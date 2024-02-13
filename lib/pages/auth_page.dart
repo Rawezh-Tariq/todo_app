@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todoapp/providers/auth_provider.dart';
-import 'package:todoapp/providers/todos_provider.dart';
 import 'package:todoapp/tools/theme.dart';
 
 class SignUp extends ConsumerStatefulWidget {
@@ -41,6 +40,14 @@ class _SignUpState extends ConsumerState<SignUp> {
   Widget build(BuildContext context) {
     final auth = ref.watch(authProvider.notifier);
     final isItSignUp = ref.watch(isSignUp);
+    ref.listen(authProvider, (previous, next) {
+      if (next.hasError && next.error != previous?.error) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: Colors.black,
+          content: Text('Email or password is incorrect'),
+        ));
+      }
+    });
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -61,6 +68,7 @@ class _SignUpState extends ConsumerState<SignUp> {
                 },
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
+                autofocus: true,
                 decoration: InputDecoration(
                   hintText: 'Write your email here',
                   border: OutlineInputBorder(
@@ -91,10 +99,8 @@ class _SignUpState extends ConsumerState<SignUp> {
                         isItSignUp
                             ? auth.signUp(
                                 _emailController.text, _passwordController.text)
-                            : auth
-                                .signIn(_emailController.text,
-                                    _passwordController.text)
-                                .then((_) => ref.invalidate(todosProvider));
+                            : auth.signIn(_emailController.text,
+                                _passwordController.text);
                       }
                     },
                     child: Text(isItSignUp ? 'Sign Up' : 'Sign In',

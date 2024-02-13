@@ -1,9 +1,18 @@
+import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final auth = Supabase.instance.client.auth;
 
 final isSignUp = StateProvider((ref) => true);
+
+// final authStream = Provider<StreamSubscription<AuthState>>(
+//   (ref) => auth.onAuthStateChange.listen((authState) {
+//     if (authState.event == AuthChangeEvent.signedIn) {
+//       ref.invalidate(todosProvider);
+//     }
+//   }),
+// );
 
 final authProvider =
     AsyncNotifierProvider<AuthProvider, void>(AuthProvider.new);

@@ -11,44 +11,41 @@ class MyCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final todoProvider = ref.watch(todosProvider.notifier);
-    final todo = ref.watch(todoProviderFamily(todoId));
-    return todo == null
-        ? Container()
-        : Dismissible(
-            background: const Icon(Icons.delete),
-            onDismissed: (_) {
-              todoProvider.deleteTodo(todo.todoId);
-            },
-            key: UniqueKey(),
-            child: GestureDetector(
-              onTap: () {
-                context.go('/todo/${todo.todoId}');
-              },
-              child: Card(
-                elevation: 5,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(todo.title,
-                          style: myTheme.textTheme.bodySmall!.copyWith(
-                              decoration: todo.togglecheck
-                                  ? TextDecoration.lineThrough
-                                  : null)),
-                      Checkbox(
-                        activeColor: Colors.black,
-                        value: todo.togglecheck,
-                        onChanged: (_) {
-                          todoProvider.togglecheck(todo.todoId);
-                        },
-                      ),
-                    ],
-                  ),
+    final todo = ref.watch(todoProviderFamily(todoId))!;
+    return Dismissible(
+      background: const Icon(Icons.delete),
+      onDismissed: (_) {
+        todoProvider.deleteTodo(todo.todoId);
+      },
+      key: UniqueKey(),
+      child: GestureDetector(
+        onTap: () {
+          context.go('/todo/${todo.todoId}');
+        },
+        child: Card(
+          elevation: 3,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(todo.title,
+                    style: myTheme.textTheme.bodySmall!.copyWith(
+                        decoration: todo.togglecheck
+                            ? TextDecoration.lineThrough
+                            : null)),
+                Checkbox(
+                  activeColor: Colors.black,
+                  value: todo.togglecheck,
+                  onChanged: (_) {
+                    todoProvider.togglecheck(todo.todoId);
+                  },
                 ),
-              ),
+              ],
             ),
-          );
+          ),
+        ),
+      ),
+    );
   }
 }

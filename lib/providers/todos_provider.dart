@@ -19,6 +19,15 @@ final todoProviderFamily = StateProviderFamily(
 class MyTodos extends AsyncNotifier<List<Todo>> {
   @override
   Future<List<Todo>> build() async {
+    final authStreamSub =
+        Supabase.instance.client.auth.onAuthStateChange.listen((authState) {
+      if (authState.event == AuthChangeEvent.signedIn) {
+        ref.invalidateSelf();
+      }
+    });
+    ref.onDispose(() {
+      authStreamSub.cancel();
+    });
     final userId = Supabase.instance.client.auth.currentUser?.id;
     final supabaseTodos = await Supabase.instance.client
         .from('todos')
