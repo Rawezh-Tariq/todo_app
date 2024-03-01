@@ -2,17 +2,9 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-final auth = Supabase.instance.client.auth;
+final _auth = Supabase.instance.client.auth;
 
 final isSignUp = StateProvider((ref) => true);
-
-// final authStream = Provider<StreamSubscription<AuthState>>(
-//   (ref) => auth.onAuthStateChange.listen((authState) {
-//     if (authState.event == AuthChangeEvent.signedIn) {
-//       ref.invalidate(todosProvider);
-//     }
-//   }),
-// );
 
 final authProvider =
     AsyncNotifierProvider<AuthProvider, void>(AuthProvider.new);
@@ -25,12 +17,12 @@ class AuthProvider extends AsyncNotifier<void> {
     state = const AsyncValue.loading();
 
     state = await AsyncValue.guard(() async {
-      await auth
+      await _auth
           .signUp(
             email: email,
             password: password,
           )
-          .whenComplete(() async => await auth.signInWithPassword(
+          .whenComplete(() async => await _auth.signInWithPassword(
                 email: email,
                 password: password,
               ));
@@ -40,7 +32,7 @@ class AuthProvider extends AsyncNotifier<void> {
   Future<void> signIn(String email, String password) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      await auth.signInWithPassword(
+      await _auth.signInWithPassword(
         email: email,
         password: password,
       );
@@ -48,8 +40,8 @@ class AuthProvider extends AsyncNotifier<void> {
   }
 
   Future<void> signOut() async {
-    await auth.signOut();
+    await _auth.signOut();
   }
 
-  get userId => auth.currentUser?.id;
+  get userId => _auth.currentUser?.id;
 }

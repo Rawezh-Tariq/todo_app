@@ -4,6 +4,8 @@ import 'package:todoapp/tools/todo.dart';
 import 'package:uuid/uuid.dart';
 import 'package:collection/collection.dart';
 
+final _auth = Supabase.instance.client.auth;
+
 final todosProvider = AsyncNotifierProvider<MyTodos, List<Todo>>(MyTodos.new);
 
 final todoProviderFamily = StateProviderFamily(
@@ -19,8 +21,7 @@ final todoProviderFamily = StateProviderFamily(
 class MyTodos extends AsyncNotifier<List<Todo>> {
   @override
   Future<List<Todo>> build() async {
-    final authStreamSub =
-        Supabase.instance.client.auth.onAuthStateChange.listen((authState) {
+    final authStreamSub = _auth.onAuthStateChange.listen((authState) {
       if (authState.event == AuthChangeEvent.signedIn) {
         ref.invalidateSelf();
       }
