@@ -17,6 +17,7 @@ A new Flutter project.
 <hr>
 
 <div align="center">
+  <img src='project_images/8.png' width='150'>
   <img src='project_images/7.png' width='150'>
 </div>
 
